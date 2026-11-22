@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rings">
+<meta name="description" content="Group the marbles by colour by turning the rings.">
+<title>Rings</title>
+  <script type="module" crossorigin src="./assets/index-CUUHnScD.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BTYZ3_qI.css">
+</head>
+<body>
+<canvas id="board" aria-label="The board: drag a marble to turn one of its rings"></canvas>
+
+<nav class="chrome" id="top">
+  <span id="home">rings</span>
+  <div class="links">
+    <button class="link" id="solve" type="button">solve it</button>
+    <span class="dot" aria-hidden="true">·</span>
+    <button class="link" id="mute" type="button" aria-pressed="false">sound on</button>
+    <span class="dot" aria-hidden="true">·</span>
+    <button class="link" id="music" type="button" aria-pressed="true">music on</button>
+    <input class="volume" id="volume" type="range" min="0" max="100" step="1" value="50" aria-label="Music volume">
+  </div>
+</nav>
+
+<footer class="chrome" id="bottom">
+  <p class="hint" id="hint">Group the marbles by colour by turning the rings.</p>
+</footer>
+
+<div class="veil hide" id="won" role="dialog" aria-modal="true" aria-labelledby="wontitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <div class="meta" id="wonlevel">level 1 of 4</div>
+    <h1 class="big" id="wontitle">Solved.</h1>
+    <p class="sub" id="wonsub">Where would you like to go from here?</p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="choices">
+      <button class="secondary" id="down" type="button">← level 1</button>
+      <button class="secondary" id="stay" type="button">play level 1 again</button>
+      <button class="primary" id="next" type="button">level 2 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="veil solid hide" id="lock" role="dialog" aria-modal="true" aria-labelledby="locktitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <h2 class="title" id="locktitle">This copy of Rings needs a key</h2>
+    <p class="sub" id="locktext">Contact Fernando and give him this number. He will send you the key that unlocks your game.</p>
+    <div class="number" id="locknumber">····-····-····</div>
+    <button class="secondary small" id="lockcopy" type="button">copy the number</button>
+    <div class="rule" aria-hidden="true"></div>
+    <label class="sr" for="lockkey">Your key</label>
+    <input class="keyfield" id="lockkey" type="text" spellcheck="false" autocomplete="off" placeholder="paste your key here">
+    <p class="note" id="locknote" aria-live="polite"></p>
+    <button class="primary" id="lockgo" type="button">unlock</button>
+  </div>
+</div>
+
+<div class="veil solid hide" id="test" role="dialog" aria-modal="true" aria-labelledby="testtitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <h2 class="title" id="testtitle">Getting Rings ready for this computer</h2>
+    <p class="sub" id="testtext">A short test, only the first time.</p>
+    <div class="bar" id="testbar" aria-hidden="true"><div class="fill" id="testfill"></div></div>
+    <button class="primary" id="testgo" type="button" hidden>play anyway</button>
+  </div>
+</div>
+
+<p class="sr" id="live" aria-live="polite"></p>
+</body>
+</html>
