@@ -26,11 +26,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rings">
 <meta name="twitter:description" content="A quiet puzzle. Turn the overlapping rings to group the marbles by colour. Simple to learn, not easy to solve.">
-<meta name="twitter:image" content="https://fp7estrellas.github.io/Rings-game/assets/og-rings.png">
+<meta name="twitter:image" content="https://fp7estrellas.github.io/Rings-game/assets/og-rings.jpg">
 
 <title>Rings</title>
-  <script type="module" crossorigin src="./assets/index-CUUHnScD.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BTYZ3_qI.css">
+  <script type="module" crossorigin src="./assets/index-ITsbFlxv.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CRtF7LSk.css">
 </head>
 <body>
 <canvas id="board" aria-label="The board: drag a marble to turn one of its rings"></canvas>
@@ -39,6 +39,8 @@
   <span id="home">rings</span>
   <div class="links">
     <button class="link" id="solve" type="button">solve it</button>
+    <span class="dot" aria-hidden="true">·</span>
+    <button class="link" id="who" type="button" aria-haspopup="dialog"><span class="long">who has solved it?</span><span class="short">who solved it?</span></button>
     <span class="dot" aria-hidden="true">·</span>
     <button class="link" id="mute" type="button" aria-pressed="false">sound on</button>
     <span class="dot" aria-hidden="true">·</span>
@@ -49,6 +51,7 @@
 
 <footer class="chrome" id="bottom">
   <p class="hint" id="hint">Group the marbles by colour by turning the rings.</p>
+  <p class="runline" id="runline" hidden><span id="runtext"></span> <button class="link inline" id="runact" type="button"></button></p>
 </footer>
 
 <div class="veil hide" id="won" role="dialog" aria-modal="true" aria-labelledby="wontitle">
@@ -57,13 +60,83 @@
     <div class="meta" id="wonlevel">level 1 of 4</div>
     <h1 class="big" id="wontitle">Solved.</h1>
     <p class="sub" id="wonsub">Where would you like to go from here?</p>
+    <p class="score" id="wonscore" hidden></p>
     <div class="rule" aria-hidden="true"></div>
     <div class="choices">
       <button class="secondary" id="down" type="button">← level 1</button>
       <button class="secondary" id="stay" type="button">play level 1 again</button>
+      <button class="secondary" id="finish" type="button" hidden>finish the run here</button>
       <button class="primary" id="next" type="button">level 2 →</button>
     </div>
+    <p class="aside" id="wonaside" hidden></p>
   </div>
+</div>
+
+<div class="veil hide" id="runend" role="dialog" aria-modal="true" aria-labelledby="runtitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <div class="meta" id="runmeta">the run is over</div>
+    <h1 class="big" id="runtitle">0</h1>
+    <p class="sub" id="runsub"></p>
+    <table class="levels" id="runlevels">
+      <thead><tr><th scope="col">level</th><th scope="col">moves</th><th scope="col">par</th><th scope="col">score</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <form class="entry" id="entry" novalidate>
+      <label class="entrylabel" for="name">Your name for the board</label>
+      <div class="entryrow">
+        <input class="keyfield namefield" id="name" type="text" maxlength="8" autocomplete="nickname" spellcheck="false" placeholder="up to 8 letters">
+        <button class="secondary small" id="send" type="submit">add to the board</button>
+      </div>
+    </form>
+    <p class="note" id="sendnote" aria-live="polite"></p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="choices">
+      <button class="secondary" id="runpractice" type="button">practise</button>
+      <button class="primary" id="runnew" type="button">new run</button>
+    </div>
+  </div>
+</div>
+
+<div class="veil hide" id="quit" role="dialog" aria-modal="true" aria-labelledby="quittitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <h2 class="title" id="quittitle">Solve it for you?</h2>
+    <p class="sub" id="quitsub">This ends your run.</p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="choices">
+      <button class="secondary" id="quityes" type="button">end the run and solve it</button>
+      <button class="primary" id="quitno" type="button">keep playing</button>
+    </div>
+  </div>
+</div>
+
+<div class="veil hide" id="tutorend" role="dialog" aria-modal="true" aria-labelledby="tutortitle">
+  <div class="card">
+    <div class="mark" aria-hidden="true"></div>
+    <div class="meta">level 1 of 4</div>
+    <h1 class="big" id="tutortitle">Solved.</h1>
+    <p class="sub">One marble at a time, each to its place. Your turn: a fresh run starts at level 1.</p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="choices">
+      <button class="primary" id="tutornew" type="button">start a new run</button>
+    </div>
+  </div>
+</div>
+
+<div class="flash" id="flash" hidden aria-hidden="true"></div>
+
+<div class="veil hide" id="scores" role="dialog" aria-modal="true" aria-labelledby="scorestitle">
+  <section class="plaque">
+    <h2 class="plaquetitle" id="scorestitle">Who has solved it?</h2>
+    <p class="plaquemeta" id="scoresmeta">the ten best runs in the world</p>
+    <table class="ranks">
+      <thead><tr><th scope="col" class="rk"><span class="sr">rank</span></th><th scope="col" class="nm">name</th><th scope="col" class="lv">level reached</th><th scope="col" class="sc">score</th></tr></thead>
+      <tbody id="scoresrows"></tbody>
+    </table>
+    <p class="plaquenote">A higher score means fewer moves. A level solved in par, the fewest moves Rings could find, scores 100; fewer moves than par scores more.</p>
+    <button class="plaqueback" id="scoresback" type="button">back to the game</button>
+  </section>
 </div>
 
 <div class="veil solid hide" id="lock" role="dialog" aria-modal="true" aria-labelledby="locktitle">
